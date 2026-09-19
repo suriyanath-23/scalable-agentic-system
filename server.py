@@ -34,6 +34,17 @@ def _message_text(message: AIMessage) -> str:
     )
 
 
+@app.get("/")
+def home() -> dict[str, Any]:
+    return {
+        "name": "Scalable Agentic System",
+        "status": "running",
+        "message": "Use POST /chat to send a question or open /docs for the API interface.",
+        "health_url": "/health",
+        "docs_url": "/docs",
+    }
+
+
 @app.get("/health")
 def health() -> dict[str, Any]:
     return {
