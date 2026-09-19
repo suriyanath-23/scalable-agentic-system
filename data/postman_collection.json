@@ -1,0 +1,183 @@
+{
+  "info": {
+    "name": "PayPal Enterprise REST Suite",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "paypal_create_invoice",
+      "description": "Create and send a draft invoice to a customer email address.",
+      "request": {
+        "method": "POST",
+        "url": { "raw": "https://api.paypal.com/v2/invoicing/invoices" }
+      },
+      "parameters": {
+        "recipient": { "description": "Customer email address to bill" },
+        "amount": { "description": "Total amount to invoice in USD" },
+        "note": { "description": "Optional invoice terms or line items" }
+      }
+    },
+    {
+      "name": "paypal_get_invoice_details",
+      "description": "Fetch status, timestamps, and balance for a specific invoice ID.",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "https://api.paypal.com/v2/invoicing/invoices/:id" }
+      },
+      "parameters": {
+        "invoice_id": { "description": "Unique identifier of the invoice (e.g., INV-2026-0049)" }
+      }
+    },
+    {
+      "name": "paypal_cancel_invoice",
+      "description": "Cancel a sent or unpaid invoice and notify the recipient.",
+      "request": {
+        "method": "POST",
+        "url": { "raw": "https://api.paypal.com/v2/invoicing/invoices/:id/cancel" }
+      },
+      "parameters": {
+        "invoice_id": { "description": "Unique identifier of the invoice to cancel" },
+        "reason": { "description": "Reason for cancellation" }
+      }
+    },
+    {
+      "name": "paypal_send_invoice_reminder",
+      "description": "Send an automated payment reminder for an unpaid or past-due invoice.",
+      "request": {
+        "method": "POST",
+        "url": { "raw": "https://api.paypal.com/v2/invoicing/invoices/:id/remind" }
+      },
+      "parameters": {
+        "invoice_id": { "description": "Invoice ID to send reminder for" }
+      }
+    },
+    {
+      "name": "paypal_check_dispute",
+      "description": "Retrieve open or resolved dispute status, claims, and seller actions.",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "https://api.paypal.com/v1/customer/disputes" }
+      },
+      "parameters": {
+        "user_id": { "description": "Customer ID or dispute identifier" }
+      }
+    },
+    {
+      "name": "paypal_escalate_dispute",
+      "description": "Escalate an existing buyer-seller inquiry into an official PayPal claim.",
+      "request": {
+        "method": "POST",
+        "url": { "raw": "https://api.paypal.com/v1/customer/disputes/:id/escalate" }
+      },
+      "parameters": {
+        "dispute_id": { "description": "Unique dispute identifier" },
+        "note_to_paypal": { "description": "Justification for escalation" }
+      }
+    },
+    {
+      "name": "paypal_provide_dispute_evidence",
+      "description": "Submit tracking numbers or documentation evidence for an active dispute.",
+      "request": {
+        "method": "POST",
+        "url": { "raw": "https://api.paypal.com/v1/customer/disputes/:id/provide-evidence" }
+      },
+      "parameters": {
+        "dispute_id": { "description": "Dispute identifier" },
+        "tracking_number": { "description": "Shipment carrier tracking code" }
+      }
+    },
+    {
+      "name": "paypal_get_sales_volume",
+      "description": "Retrieve transaction count, net revenue, and aggregate sales for a given date range.",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "https://api.paypal.com/v1/reporting/transactions" }
+      },
+      "parameters": {
+        "period": { "description": "Reporting range: 'today', 'last_week', 'last_month', or 'year_to_date'" }
+      }
+    },
+    {
+      "name": "paypal_create_order",
+      "description": "Initialize a checkout order with intent to capture or authorize funds.",
+      "request": {
+        "method": "POST",
+        "url": { "raw": "https://api.paypal.com/v2/checkout/orders" }
+      },
+      "parameters": {
+        "amount": { "description": "Total order cost" },
+        "currency": { "description": "ISO currency code, e.g., 'USD'" }
+      }
+    },
+    {
+      "name": "paypal_capture_order",
+      "description": "Capture payment for an approved order to finalize the transaction.",
+      "request": {
+        "method": "POST",
+        "url": { "raw": "https://api.paypal.com/v2/checkout/orders/:id/capture" }
+      },
+      "parameters": {
+        "order_id": { "description": "Order ID returned during checkout initialization" }
+      }
+    },
+    {
+      "name": "paypal_issue_refund",
+      "description": "Issue a full or partial refund for an existing captured payment.",
+      "request": {
+        "method": "POST",
+        "url": { "raw": "https://api.paypal.com/v2/payments/captures/:id/refund" }
+      },
+      "parameters": {
+        "capture_id": { "description": "Payment capture transaction ID" },
+        "amount": { "description": "Refund amount" }
+      }
+    },
+    {
+      "name": "paypal_create_subscription_plan",
+      "description": "Define billing cycles, trial intervals, and recurring fees for subscriptions.",
+      "request": {
+        "method": "POST",
+        "url": { "raw": "https://api.paypal.com/v1/billing/plans" }
+      },
+      "parameters": {
+        "product_id": { "description": "Product ID associated with plan" },
+        "name": { "description": "Plan display name" },
+        "interval": { "description": "Billing frequency, e.g., 'MONTH', 'YEAR'" }
+      }
+    },
+    {
+      "name": "paypal_cancel_subscription",
+      "description": "Terminate an active recurring subscription agreement.",
+      "request": {
+        "method": "POST",
+        "url": { "raw": "https://api.paypal.com/v1/billing/subscriptions/:id/cancel" }
+      },
+      "parameters": {
+        "subscription_id": { "description": "Subscription agreement ID" },
+        "reason": { "description": "Reason for cancellation" }
+      }
+    },
+    {
+      "name": "paypal_create_payout",
+      "description": "Disburse batch or individual payments directly to vendor or contractor accounts.",
+      "request": {
+        "method": "POST",
+        "url": { "raw": "https://api.paypal.com/v1/payments/payouts" }
+      },
+      "parameters": {
+        "receiver_email": { "description": "Recipient PayPal address" },
+        "amount": { "description": "Payout amount" },
+        "note": { "description": "Transaction reference note" }
+      }
+    },
+    {
+      "name": "paypal_list_webhooks",
+      "description": "List all configured webhooks receiving asynchronous event updates.",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "https://api.paypal.com/v1/notifications/webhooks" }
+      },
+      "parameters": {}
+    }
+  ]
+}

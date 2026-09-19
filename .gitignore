@@ -1,0 +1,10 @@
+.env
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.vscode/
+data/retrieval.db
+data/retrieval.db-shm
+data/retrieval.db-wal
+data/traces.jsonl
