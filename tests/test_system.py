@@ -3,9 +3,12 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from fastapi.testclient import TestClient
+
 from core.knowledge_base import KnowledgeBase
 from core.registry import UniversalToolRegistry
 from core.retrieval import PersistentHybridIndex
+from server import app
 from tools.base_tools import create_dynamic_tool, rag_pipeline_tool, system_search_tool
 from tools.executor import mock_network_executor
 
@@ -66,6 +69,21 @@ class ToolTests(unittest.TestCase):
     def test_system_search_returns_matches(self):
         result = json.loads(system_search_tool.invoke({"query": "sales volume"}))
         self.assertIn("paypal_get_sales_volume", result["matching_tools"])
+
+
+class ApiTests(unittest.TestCase):
+    def test_health_and_chat_endpoints(self):
+        client = TestClient(app)
+        health = client.get("/health")
+        self.assertEqual(health.status_code, 200)
+        self.assertEqual(health.json()["registered_endpoints"], 57)
+
+        response = client.post(
+            "/chat",
+            json={"message": "What was my total sales volume last month?"},
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("paypal_get_sales_volume", response.json()["answer"])
 
 
 if __name__ == "__main__":

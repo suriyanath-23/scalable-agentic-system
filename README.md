@@ -12,6 +12,19 @@ python main.py
 
 Set `OFFLINE_MODE=false` and provide a newly rotated `GEMINI_API_KEY` in `.env` to use Gemini for reasoning. The tool registry remains local and persistent in both modes.
 
+## Host as a web service
+
+The existing CLI benchmark remains available through `main.py`. For Render, Railway, or Cloud Run, the HTTP adapter is `server.py`:
+
+```powershell
+python -m pip install -r requirements.txt
+uvicorn server:app --host 0.0.0.0 --port 8000
+```
+
+Then open `http://127.0.0.1:8000/docs`. Use `GET /health` for a deployment health check and `POST /chat` with `{ "message": "What was my total sales volume last month?" }` for an agent request.
+
+For Render, use build command `pip install -r requirements.txt` and start command `uvicorn server:app --host 0.0.0.0 --port $PORT`. Add `GEMINI_API_KEY`, `OFFLINE_MODE`, and the other configuration values in Render's Environment settings, never in GitHub.
+
 Run tests with:
 
 ```powershell
@@ -36,6 +49,6 @@ python -m unittest discover -s tests -v
 ## Data and generated files
 
 - `data/postman_collection.json` contains the original endpoints.
-- `data/paypal_additional_collection.json` expands the catalog to 55 endpoints.
+- `data/paypal_additional_collection.json` expands the catalog to 57 total endpoints.
 - `data/knowledge_base/` contains source documents for the RAG pipeline.
 - `data/retrieval.db` and `data/traces.jsonl` are local generated artifacts and are ignored by Git.
